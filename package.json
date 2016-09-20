@@ -1,5 +1,5 @@
 {
-  "name": "Artix-Logger",
+  "name": "Frozor-Logger",
   "description": "Custom logger with localized console timestamps, log levels, and prefixes.",
   "version": "1.0.0",
   "dependencies": {
