@@ -84,7 +84,7 @@ class Logger{
         try{
             save = save || false;
             file = file || this.fileNames.OUTPUT;
-            var toLog = `${chalk.bold(this.getConsoleTimestamp())} ${message}`;
+            var toLog = `${chalk.bold(this.getConsoleTimestamp())}${message}`;
             try{
                 process.stdout.write(`${toLog}\n`);
             }catch(e){
