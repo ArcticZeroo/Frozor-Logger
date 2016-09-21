@@ -9,11 +9,11 @@ class Logger{
         this.log_level  = 0;
 
         this.fileNames    = {
-            OUTPUT:  `${__dirname}/log/output.log`,
-            DEBUG:   `${__dirname}/log/debug.log`,
-            ERROR:   `${__dirname}/log/error.log`,
-            COMMAND: `${__dirname}/log/command.log`,
-            GWEN:    `${__dirname}/log/gwen.log`,
+            OUTPUT:  `${__dirname}/output.log`,
+            DEBUG:   `${__dirname}/debug.log`,
+            ERROR:   `${__dirname}/error.log`,
+            COMMAND: `${__dirname}/command.log`,
+            GWEN:    `${__dirname}/gwen.log`,
         }
 
         this.writeStreams = {};
