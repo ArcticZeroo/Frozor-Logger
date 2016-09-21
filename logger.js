@@ -8,8 +8,6 @@ class Logger{
         this.log_levels = ["ALL", "DEBUG", "GWEN", "COMMAND", "INFO", "WARNING", "ERROR", "NONE"];
         this.log_level  = 0;
 
-        if(!fs.existsSync(`${__dirname}/log/`)) fs.mkdir('log');
-
         this.fileNames    = {
             OUTPUT:  `${__dirname}/log/output.log`,
             DEBUG:   `${__dirname}/log/debug.log`,
@@ -34,7 +32,7 @@ class Logger{
             var filePath = this.fileNames[fileType];
             this.writeStreams[filePath] = {
                 opened: false,
-                stream: fs.createWriteStream(filePath, {flags: 'a'}),
+                stream: fs.createWriteStream(filePath, {flags: 'a+'}),
                 queue: []
             }
             this.streamOpenedHandler(filePath);
