@@ -1,13 +1,12 @@
 var chalk          = require('chalk');
 var fs             = require('fs');
 
+var log_level = 0;
 class Logger{
     constructor(){
         this.chalk  = chalk;
 
         this.log_levels = ["ALL", "DEBUG", "GWEN", "COMMAND", "INFO", "WARNING", "ERROR", "NONE"];
-        this.log_level  = 0;
-
         this.fileNames    = {
             OUTPUT:  `${__dirname}/output.log`,
             DEBUG:   `${__dirname}/debug.log`,
@@ -48,16 +47,21 @@ class Logger{
         this.logWarning = this.warning;
     }
 
-    setLogLevel(log_level){
-        this.log_level = this.log_levels.indexOf(log_level.toUpperCase());
+    setLogLevel(new_level){
+        log_level = (this.log_levels.indexOf(new_level.toUpperCase()));
     }
 
     getLogLevel(){
-        return this.log_levels[this.log_level];
+        return this.log_levels[log_level];
     }
 
     getLogLevelInt(){
-        return this.log_level;
+        return log_level;
+    }
+    
+    canLog(level){
+        //console.log(`${level} ${this.log_levels.indexOf(level)} ${this.getLogLevelInt()} ${log_level}`);
+        return (this.log_levels.indexOf(level) >= log_level);
     }
 
     getConsoleTimestamp(){
@@ -106,10 +110,10 @@ class Logger{
     getLogMessage(color, type, message, prefix){
         return `${this.getLogStart(color, type, prefix)} ${message}`;
     }
-    
+
     error(message, prefix){
         var level = "ERROR";
-        if(this.log_levels.indexOf(level) < this.log_level) return;
+        if(!this.canLog(level)) return;
 
         try{
             prefix = prefix || false;
@@ -121,7 +125,7 @@ class Logger{
 
     debug(message, prefix){
         var level = "DEBUG";
-        if(this.log_levels.indexOf(level) < this.log_level) return;
+        if(!this.canLog(level)) return;
 
         try{
             prefix = prefix || false;
@@ -133,7 +137,7 @@ class Logger{
 
     info(message, prefix){
         var level = "INFO";
-        if(this.log_levels.indexOf(level) < this.log_level) return;
+        if(!this.canLog(level)) return;
 
         try{
             prefix = prefix || false;
@@ -145,7 +149,7 @@ class Logger{
 
     warning(message, prefix){
         var level = "WARNING";
-        if(this.log_levels.indexOf(level) < this.log_level) return;
+        if(!this.canLog(level)) return;
 
         try{
             prefix = prefix || false;
@@ -157,7 +161,7 @@ class Logger{
 
     gwen(message, prefix){
         var level = "GWEN";
-        if(this.log_levels.indexOf(level) < this.log_level) return;
+        if(!this.canLog(level)) return;
 
         try{
             prefix = prefix || false;
@@ -169,7 +173,7 @@ class Logger{
 
     command(name, command, type, success){
         var level = "COMMAND";
-        if(this.log_levels.indexOf(level) < this.log_level) return;
+        if(!this.canLog(level)) return;
 
         try{
             type    = type || "/m";
