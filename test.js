@@ -17,6 +17,8 @@ log.info(`This is a debug message with a prefix!`, "PREFIX");
 
 log.command(`Cool man`, `Test Command`, 'Console', true);
 
+log.command(`Not cool man`, `Test Command 2`, 'Console', false);
+
 //To give time for WritableStreams to open
 setTimeout(()=>{
     process.exit();

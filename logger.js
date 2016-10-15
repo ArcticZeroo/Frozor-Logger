@@ -14,7 +14,7 @@ class Logger{
             ERROR:   `${__dirname}/error.log`,
             COMMAND: `${__dirname}/command.log`,
             GWEN:    `${__dirname}/gwen.log`,
-        }
+        };
 
         this.writeStreams = {};
 
@@ -34,7 +34,7 @@ class Logger{
                 opened: false,
                 stream: fs.createWriteStream(filePath, {flags: 'a+'}),
                 queue: []
-            }
+            };
             this.streamOpenedHandler(filePath);
         }
 
@@ -172,8 +172,8 @@ class Logger{
         if(this.log_levels.indexOf(level) < this.log_level) return;
 
         try{
-            type    = type || "/m"
-            success = success || true;
+            type    = type || "/m";
+            if(success == undefined) success = true;
 
             var successColorString = '';
             if(success) successColorString = chalk.green("Successfully");
