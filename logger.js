@@ -120,8 +120,9 @@ class Logger{
             }
 
             if(save) {
-                if(!this.writeStreams[file].opened) return this.writeStreams[file].queue.push(`\r\n${chalk.stripColor(toLog)}`);
-                this.writeStreams[file].stream.write(`\r\n${chalk.stripColor(toLog)}`);
+                var logMessage = `\r\n${chalk.stripColor(toLog)}`;
+                if(!this.writeStreams[file].opened) return this.writeStreams[file].queue.push(logMessage);
+                this.writeStreams[file].stream.write(logMessage);
             }
         }catch(e){}
     }
@@ -226,4 +227,4 @@ class Logger{
     }
 }
 
-module.exports = new Logger();
+module.exports = Logger;
