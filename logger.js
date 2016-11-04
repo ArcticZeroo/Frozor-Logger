@@ -3,19 +3,20 @@ var fs             = require('fs');
 
 var log_level = 0;
 class Logger{
-    constructor(){
+    constructor(globalPrefix){
         this.chalk  = chalk;
 
-        this.log_levels = ["ALL", "DEBUG", "GWEN", "COMMAND", "INFO", "WARNING", "ERROR", "NONE"];
-        this.fileNames    = {
+        this.local_log_level = null;
+        this.log_levels      = ["ALL", "DEBUG", "GWEN", "COMMAND", "INFO", "WARNING", "ERROR", "NONE"];
+        this.fileNames       = {
             OUTPUT:  `${__dirname}/output.log`,
             DEBUG:   `${__dirname}/debug.log`,
             ERROR:   `${__dirname}/error.log`,
             COMMAND: `${__dirname}/command.log`,
-            GWEN:    `${__dirname}/gwen.log`,
+            GWEN:    `${__dirname}/gwen.log`
         };
 
-        this.writeStreams = {};
+        this.writeStreams     = {};
 
         this.streamOpenedHandler = function(file){
             this.writeStreams[file].stream.on('open', ()=>{
@@ -25,20 +26,21 @@ class Logger{
                     delete this.writeStreams[file].queue;
                 }
             });
-        }
+        };
 
         for(var fileType in this.fileNames){
             var filePath = this.fileNames[fileType];
             this.writeStreams[filePath] = {
                 opened: false,
                 stream: fs.createWriteStream(filePath, {flags: 'a+'}),
-                queue: []
+                queue : []
             };
             this.streamOpenedHandler(filePath);
         }
 
+        this.prefix = globalPrefix;
 
-    //legacy methods in case I forget to convert -- for old projects
+        //legacy methods in case I forget to convert -- for old projects
         this.logInfo    = this.info;
         this.logDebug   = this.debug;
         this.logError   = this.error;
@@ -58,13 +60,35 @@ class Logger{
     getLogLevelInt(){
         return log_level;
     }
-    
-    canLog(level){
-        //console.log(`${level} ${this.log_levels.indexOf(level)} ${this.getLogLevelInt()} ${log_level}`);
-        return (this.log_levels.indexOf(level) >= log_level);
+
+    setLocalLogLevel(new_level){
+        this.local_log_level = (this.log_levels.indexOf(new_level.toUpperCase()));
     }
 
-    getConsoleTimestamp(){
+    getLocalLogLevel(){
+        if(!this.local_log_level) return null;
+        return this.log_levels[this.local_log_level];
+    }
+
+    getLocalLogLevelInt(){
+        return this.local_log_level;
+    }
+
+
+    canLog(level){
+        //console.log(`${level} ${this.log_levels.indexOf(level)} ${this.getLogLevelInt()} ${log_level}`);
+        return ((this.local_log_level) ? this.log_levels.indexOf(level) >= this.getLocalLogLevelInt() : this.log_levels.indexOf(level) >= this.getLogLevelInt());
+    }
+
+    getPrefix(){
+        return this.prefix;
+    }
+
+    setPrefix(prefix){
+        this.prefix = prefix;
+    }
+
+    static getConsoleTimestamp(){
         var date = new Date();
         var minutes = date.getMinutes();
         var hours = date.getHours();
@@ -88,7 +112,7 @@ class Logger{
         try{
             save = save || false;
             file = file || this.fileNames.OUTPUT;
-            var toLog = `${chalk.bold(this.getConsoleTimestamp())}${message}`;
+            var toLog = `${chalk.bold(Logger.getConsoleTimestamp())}${message}`;
             try{
                 process.stdout.write(`${toLog}\n`);
             }catch(e){
@@ -102,9 +126,19 @@ class Logger{
         }catch(e){}
     }
 
+    getLogPrefix(prefix){
+        let globalPrefix = this.getPrefix();
+        if(!prefix && !globalPrefix) return null;
+        return `[${(globalPrefix) ? ((prefix) ? `${globalPrefix}|` : globalPrefix) : ``}${(prefix) ? `${prefix}` : ``}]`;
+    }
+
+    static getLogTypeString(color, type){
+        return `${color(chalk.bold(type))}:`;
+    }
+
     getLogStart(color, type, prefix){
-        if(!prefix) return color(`${chalk.bold(type)}:`);
-        return `${color(`[${prefix}]`)} ${color(`${chalk.bold(type)}:`)}`;
+        var logPrefix = this.getLogPrefix(prefix);
+        return `${(logPrefix) ? `${color(logPrefix)} ` : ``}${Logger.getLogTypeString(color, type)}`;
     }
 
     getLogMessage(color, type, message, prefix){
@@ -112,7 +146,7 @@ class Logger{
     }
 
     error(message, prefix){
-        var level = "ERROR";
+        var level         = "ERROR";
         if(!this.canLog(level)) return;
 
         try{
