@@ -226,4 +226,6 @@ class Logger{
     }
 }
 
-module.exports = new Logger();
+module.exports = function (prefix) {
+    new Logger(prefix);
+};
