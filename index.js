@@ -25,6 +25,8 @@ class Logger extends winston.Logger{
         });
 
         this.warning = this.warn;
+
+        this.chalk = chalk;
     }
 
     log(level, message, prefix){
