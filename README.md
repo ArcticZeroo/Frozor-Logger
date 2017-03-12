@@ -16,12 +16,14 @@ Usage:
 
 ```$xslt
 const Logger = require('frozor-logger');
-const log = new Logger('myprefix');
-log.info('Hello world!', 'anotherprefix');
+const log = new Logger('MyPrefix');
+log.info('Hello world!', 'AnotherPrefix');
 ```
 
 Would output:
 
 ```$xslt
-
+[03/12/2017 15:51:07] [MyPrefix|AnotherPrefix] INFO: Hello world!
 ```
+
+You can omit MyPrefix when instantiating the logger to remove the global prefix, or remove AnotherPrefix to only show the global prefix. You can't change the global prefix once it's been instantiated.
