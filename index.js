@@ -37,6 +37,3 @@ class Logger extends winston.Logger{
 }
 
 module.exports = Logger;
-
-const log = new Logger('MyPrefix');
-log.info('Hello world!', 'AnotherPrefix');
