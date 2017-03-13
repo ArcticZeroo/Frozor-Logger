@@ -12,11 +12,11 @@ const colors = {
 const getColor = (type)=> colors[type.toUpperCase()] || chalk.white;
 
 class Logger extends winston.Logger{
-    constructor(prefix){
+    constructor(prefix, filename){
         super({
             colorize: false,
             transports:[
-                new (winston.transports.File)({ filename: (prefix||'frozor')+'-logger.log' }),
+                new (winston.transports.File)({ filename: (filename||prefix||'frozor')+'-logger.log' }),
                 new (winston.transports.Console)({
                     timestamp: ()=> dateFormat(new Date(), 'mm/dd/yyyy HH:MM:ss'),
                     formatter: (opt)=> `${chalk.white(`[${opt.timestamp()}]`)} ${getColor(opt.level)(`${(opt.meta.prefix)?`[${(prefix)?`${prefix}|${opt.meta.prefix}`:opt.meta.prefix}] `:(prefix)?`[${prefix}] ` : ''}`)}${getColor(opt.level).bold(`${opt.level.toUpperCase()}`)}${chalk.white(`: ${opt.message}`)}`
