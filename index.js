@@ -24,6 +24,8 @@ class Logger extends winston.Logger{
             ]
         });
 
+        this.exitOnError = false;
+
         this.warning = this.warn;
 
         this.chalk = chalk;
