@@ -16,8 +16,9 @@ class Logger extends winston.Logger{
         super({
             colorize: false,
             transports:[
-                new (winston.transports.File)({ filename: (filename||prefix||'frozor')+'-logger.log' }),
+                new (winston.transports.File)({ filename: (filename||prefix||'frozor')+'-logger.log', levels: { error: 0, warn: 1, command: 2, info: 3, verbose: 4, debug: 5, silly: 6 } }),
                 new (winston.transports.Console)({
+                    levels: { error: 0, warn: 1, command: 2, info: 3, verbose: 4, debug: 5, silly: 6 },
                     timestamp: ()=> dateFormat(new Date(), 'mm/dd/yyyy HH:MM:ss'),
                     formatter: (opt)=> `${chalk.white(`[${opt.timestamp()}]`)} ${getColor(opt.level)(`${(opt.meta.prefix)?`[${(prefix)?`${prefix}|${opt.meta.prefix}`:opt.meta.prefix}] `:(prefix)?`[${prefix}] ` : ''}`)}${getColor(opt.level).bold(`${opt.level.toUpperCase()}`)}${chalk.white(`: ${opt.message}`)}`
                 })
