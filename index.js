@@ -38,7 +38,7 @@ class Logger extends winston.Logger{
     }
 
     command(name, cmd, type, success){
-        this.log('command', `${this.log.chalk.cyan(name)} executed ${this.log.chalk.cyan(type)} command ${this.log.chalk.magenta(cmd)} ${(success)?this.log.chalk.green('Successful'):this.log.chalk.red('Unsuccessfully')}`);
+        this.log('command', `${chalk.cyan(name)} executed ${chalk.cyan(type)} command ${chalk.magenta(cmd)} ${(success)?chalk.green('Successful'):chalk.red('Unsuccessfully')}`);
     }
 }
 
