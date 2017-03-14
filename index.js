@@ -19,7 +19,7 @@ class Logger extends winston.Logger{
         super({
             colorize: false,
             transports:[
-                new (winston.transports.File)({ filename: (filename||prefix||'frozor')+'-logger.log'}),
+                new (winston.transports.File)({ filename: (filename||prefix||'frozor')+'-logger.log', formatter: (opt)=> chalk.stripColor(opt.message)}),
                 new (winston.transports.Console)({
                     levels: { error: 0, warn: 1, command: 2, info: 3, verbose: 4, debug: 5, silly: 6 },
                     timestamp: getTimestamp,
