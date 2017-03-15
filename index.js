@@ -1,3 +1,4 @@
+const fs = require('fs');
 const winston = require('winston');
 const dateFormat = require('dateformat');
 const chalk = require('chalk');
@@ -19,7 +20,7 @@ class Logger extends winston.Logger{
         super({
             colorize: false,
             transports:[
-                new (winston.transports.File)({ filename: (filename||prefix||'frozor')+'-logger.log', formatter: (opt)=> chalk.stripColor(opt.message)}),
+                new (winston.transports.File)({ filename: 'logs/'+(filename||prefix||'frozor')+'-logger.log', formatter: (opt)=> chalk.stripColor(opt.message)}),
                 new (winston.transports.Console)({
                     levels: { error: 0, warn: 1, command: 2, info: 3, verbose: 4, debug: 5, silly: 6 },
                     timestamp: getTimestamp,
@@ -32,6 +33,12 @@ class Logger extends winston.Logger{
                 })
             ]
         });
+
+        if(!fs.existsSync('./logs')){
+            fs.mkdirSync('./logs');
+        }
+
+        this.prefix = prefix;
 
         this.exitOnError = false;
 
