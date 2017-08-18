@@ -2,6 +2,7 @@ const fs = require('fs');
 const winston = require('winston');
 const dateFormat = require('dateformat');
 const chalk = require('chalk');
+const sanitizeFileName = require('sanitize-filename');
 
 const colors = {
     INFO: chalk.green,
@@ -30,7 +31,7 @@ class Logger extends winston.Logger{
         super({
             colorize: false,
             transports:[
-                new (winston.transports.File)({ filename: 'logs/'+(filename||prefix||'frozor')+'-logger.log', formatter: (opt)=> chalk.stripColor(opt.message), level: LOG_LEVEL}),
+                new (winston.transports.File)({ filename: `logs/${sanitizeFileName(filename || prefix ||'frozor')}-logger.log`, formatter: (opt)=> chalk.stripColor(opt.message), level: LOG_LEVEL}),
                 new (winston.transports.Console)({
                     levels: { error: 0, warn: 1, command: 2, info: 3, verbose: 4, debug: 5, silly: 6 },
                     timestamp: getTimestamp,

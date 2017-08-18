@@ -8,6 +8,7 @@
   "dependencies": {
     "chalk": "^2.1.0",
     "dateformat": "^2.0.0",
+    "sanitize-filename": "^1.6.1",
     "winston": "^2.3.1"
   }
 }
