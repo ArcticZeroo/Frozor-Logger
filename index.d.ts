@@ -2,7 +2,7 @@ import { Chalk } from 'chalk';
 
 type LogFunction = (text: any, prefix: any, meta?: {}) => any;
 
-class Logger {
+declare class Logger {
     info: LogFunction;
     warn: LogFunction;
     warning: LogFunction;
