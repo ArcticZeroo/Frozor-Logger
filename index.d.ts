@@ -1,6 +1,6 @@
 import { Chalk } from 'chalk';
 
-type LogFunction = (text: any, prefix: any, meta?: {}) => any;
+type LogFunction = (text: any, prefix?: any, meta?: {}) => any;
 
 declare class Logger {
     info: LogFunction;
@@ -9,6 +9,8 @@ declare class Logger {
     error: LogFunction;
     debug: LogFunction;
     command: (name: string, cmd: string, type: string, success?: boolean) => any;
+
+    constructor(prefix?: string, filename?: string);
 
     readonly prefix: string;
     readonly exitOnError: boolean;
