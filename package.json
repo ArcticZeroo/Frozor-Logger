@@ -3,6 +3,7 @@
   "version": "3.0.14",
   "description": "A cool logger. Wraps winston.",
   "main": "index.js",
+  "types": "./index.d.ts",
   "author": "ArcticZeroo",
   "license": "ISC",
   "dependencies": {
