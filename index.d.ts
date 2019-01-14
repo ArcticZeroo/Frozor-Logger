@@ -2,7 +2,7 @@ import { Chalk } from 'chalk';
 
 type LogFunction = (text: any, prefix?: any, meta?: {}) => any;
 
-declare class Logger {
+export default class Logger {
     info: LogFunction;
     warn: LogFunction;
     warning: LogFunction;
@@ -18,5 +18,3 @@ declare class Logger {
     chalk: Chalk;
     static chalk: Chalk;
 }
-
-export default Logger;
